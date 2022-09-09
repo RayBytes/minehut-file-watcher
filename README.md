@@ -7,7 +7,7 @@ Like this project? [Star the repo](https://github.com/RayBytes/minehut-file-watc
 Found a bug, have a suggestion? [Make an issue](https://github.com/RayBytes/minehut-file-watcher/issues)  
 
 **This is a fixed version of Jellz minehut file watcher (https://github.com/jellz/minehut-file-watcher)**
-**I am not the original creator, just maintaining it with new breaking API changes.
+**I am not the original creator, just maintaining it with new breaking API changes.**
 
 ## Getting Started
 
