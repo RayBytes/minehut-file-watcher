@@ -57,7 +57,7 @@ const getCookie = (name) => decodeURIComponent(document.cookie).split("; ").find
 ({
     minehutToken: getCookie("access_token_prd"),
     minehutSession: localStorage.minehut_session_id,
-    slgProfile: localStorage.slg_profile_id,
+    slgProfile: localStorage.slg_session_id,
 });
 ```
 Take the values and input them into the seperate inputs for each value.
