@@ -54,7 +54,7 @@ const getCookie = (name) => decodeURIComponent(document.cookie).split("; ").find
   cookie => cookie.startsWith(name)
 ).slice(name.length + 1);
 
-JSON.stringify({
+({
     minehutToken: getCookie("access_token_prd"),
     minehutSession: localStorage.minehut_session_id,
     slgProfile: localStorage.slg_profile_id,
