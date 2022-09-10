@@ -54,18 +54,19 @@ const getCookie = (name) => decodeURIComponent(document.cookie).split("; ").find
   cookie => cookie.startsWith(name)
 ).slice(name.length + 1);
 
-({
+JSON.stringify({
     minehutToken: getCookie("access_token_prd"),
     minehutSession: localStorage.minehut_session_id,
-    slgSession: localStorage.slg_session_id,
+    slgToken: localStorage.slg_user_token,
 });
 ```
 Take the values and input them into the seperate inputs for each value.
+(Or, you can instead use the --dump=(auth) method to just dump the full result of the code above and have it sorted automatically by the code.)
 
 - Set your Minehut session-id with `mh-watch --setsession=1234abcd`
 - Set your Minehut auth token with `mh-watch --setauth=minehutisfree78`
 - Choose your server with `mh-watch --setserver=MyServer` (the command should output the server ID if it was successful)
 
-After setting the three config values, run the following command in a terminal: `mh-watch --minehutpath=path/to/file/on/minehut.yml path/to/my/file.yml`. If I was editing a script, I would use the command `mh-watch --minehutpath=plugins/Skript/scripts/shop.sk shop.sk`. You need to pass the `--minehutpath` option every time you watch a file, while the other three config options are persistent.
+After setting the three config values, run the following command in a terminal: `mh-watch path/to/my/file.yml --minehutpath=path/to/file/on/minehut.yml`. If I was editing a script, I would use the command `mh-watch shop.sk --minehutpath=plugins/Skript/scripts/shop.sk`. You need to pass the `--minehutpath` option every time you watch a file, while the other three config options are persistent.
 
 > **Note:** If the value of `minehutpath` is a path to a nonexistent file, the file will automatically be created on the server.
