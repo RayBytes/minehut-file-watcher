@@ -56,18 +56,43 @@ At the moment, you can use the following code to get the auth keys:
 (You need to inspect element the minehut website, and go to console. Paste this all in there)
 
 ```javascript
+console.save = function (data, filename) {
+    if (!data) {
+        console.error('Console.save: No data')
+        return;
+    }
+
+    if (!filename) filename = 'data.json'
+
+    if (typeof data === "object") {
+        data = JSON.stringify(data, undefined, 4)
+    }
+
+    var blob = new Blob([data], {
+            type: 'text/json'
+        }),
+        e = document.createEvent('MouseEvents'),
+        a = document.createElement('a')
+
+    a.download = filename
+    a.href = window.URL.createObjectURL(blob)
+    a.dataset.downloadurl = ['text/json', a.download, a.href].join(':')
+    e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null)
+    a.dispatchEvent(e)
+}
+
 const getCookie = (name) => decodeURIComponent(document.cookie).split("; ").find(
   cookie => cookie.startsWith(name)
 ).slice(name.length + 1);
 
-JSON.stringify({
+console.save(({
     minehutToken: getCookie("access_token_prd"),
     minehutSession: localStorage.minehut_session_id,
     slgToken: localStorage.slg_user_token,
-});
+}));
 ```
 Take the values and input them into the seperate inputs for each value.
-(Or, you can instead use the --dump=(auth) method to just dump the full result of the code above and have it sorted automatically by the code.)
+(Or, you can instead use the --dump=(auth-file) method to just dump the full file result of the code above and have it sorted automatically by the code.)
 
 - Set your Minehut session-id with `mh-watch --setsession=1234abcd`
 - Set your Minehut auth token with `mh-watch --setauth=minehutisfree78`
