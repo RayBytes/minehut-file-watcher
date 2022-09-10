@@ -28,6 +28,12 @@ Set the session id to use to authenticate with Minehut (not persistent, you may 
 --setauth=<token>
 Set the password to use to authenticate with Minehut (not persistent, you may need to update this)
 
+--setprofiletoken=<id>
+Set the SLG profile token to authenticate with Minehut
+
+--dump=<auth>
+If you use the code in the read me, you can just dump the result here and everything will be set for you.
+
 --getconfig
 Get your current config. Useful for debugging.
 
@@ -65,6 +71,7 @@ Take the values and input them into the seperate inputs for each value.
 
 - Set your Minehut session-id with `mh-watch --setsession=1234abcd`
 - Set your Minehut auth token with `mh-watch --setauth=minehutisfree78`
+- Set your Minehut SLG profile token with `mh-watch --setprofiletoken=omgthisismyprofile!!`
 - Choose your server with `mh-watch --setserver=MyServer` (the command should output the server ID if it was successful)
 
 After setting the three config values, run the following command in a terminal: `mh-watch path/to/my/file.yml --minehutpath=path/to/file/on/minehut.yml`. If I was editing a script, I would use the command `mh-watch shop.sk --minehutpath=plugins/Skript/scripts/shop.sk`. You need to pass the `--minehutpath` option every time you watch a file, while the other three config options are persistent.
