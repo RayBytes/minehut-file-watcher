@@ -13,7 +13,6 @@ let config = new Config();
 let showHelpCommand = true;
 
 const MINEHUT_API_BASE = 'https://api.minehut.com';
-
 if (argv.setsession) {
 	if (typeof argv.setsession !== 'string')
 		return console.error('Session id must be a string'.bold.red);
@@ -37,6 +36,9 @@ if (argv.setprofiletoken) {
 	console.log(`Set ID.`.green);
 	showHelpCommand = false;
 }
+/** 
+
+* OLD DUMP CODE. USE NEW DUMP CODE BECAUSE YARGS LIKES TO HAVE BUGS WITH WINDOWS :))))))))) *
 
 if (argv.dump) {
 	try {
@@ -52,6 +54,21 @@ if (argv.dump) {
 		console.error(`Error occured:\n${e}`.red)
 	}
 
+}
+*/
+
+if (argv.dump) {
+	try {
+		let localPath = argv.dump;
+		var object = JSON.parse(fs.readFileSync(localPath, 'utf8'));
+		config.set('auth.session_id', object.minehutSession)
+		config.set('auth.token', 'Bearer ' + object.minehutToken)
+		config.set('auth.slg_user_token', object.slgToken)
+		console.log('All values set!'.green)
+		showHelpCommand = false;
+	} catch (e) {
+		console.error(`Error occured:\n${e}`.red)
+	}
 }
 
 if (argv.setserver) {
@@ -169,14 +186,14 @@ if (showHelpCommand) {
 			'--setprofiletoken=<id>'.bold.white,
 			'Set the SLG profile token to authenticate with Minehut'.yellow,
 			'',
+			'--dump=<auth>'.bold.white,
+			'If you use the code in the read me, you can just dump the file/directory of the file recieved here and everything will be set for you.'.yellow,
+			'',
 			'--getconfig'.bold.white,
 			'Get your current config. Useful for debugging.'.yellow,
 			'',
 			'--minehutpath=<remote path>'.bold.white,
 			'Set the path of the file you want to update remotely'.yellow,
-			'',
-			'--dump=<auth>'.bold.white,
-			'If you use the code in the read me, you can just dump the result here and everything will be set for you.'.yellow,
 			'',
 			'After setting the above config values, use '.bold.white +
 				'mh-watch <file> (--minehutpath=<remote path>)'.bold.red +
