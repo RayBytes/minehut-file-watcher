@@ -30,12 +30,28 @@ if (argv.setauth) {
 	showHelpCommand = false;
 }
 
-if (argv.setprofileid) {
-	if (typeof argv.setprofileid !== 'string')
-		return console.error('SLG Profile ID must be a string.'.bold.red);
-	config.set('auth.profile_id', argv.setprofileid);
+if (argv.setprofiletoken) {
+	if (typeof argv.setprofiletoken !== 'string')
+		return console.error('SLG User Token must be a string.'.bold.red);
+	config.set('auth.slg_user_token', argv.setprofiletoken);
 	console.log(`Set ID.`.green);
 	showHelpCommand = false;
+}
+
+if (argv.dump) {
+	try {
+		const object = JSON.parse(argv.dump);
+		config.set('auth.session_id', object.minehutSession)
+		config.set('auth.token', 'Bearer ' + object.minehutToken)
+		config.set('auth.slg_user_token', object.slgToken)
+		console.log('Set session id.'.green)
+		console.log('Set token.'.green)
+		console.log('Set profile ID.'.green)
+		showHelpCommand = false;
+	} catch (e) {
+		console.error(`Error occured:\n${e}`.red)
+	}
+
 }
 
 if (argv.setserver) {
@@ -70,7 +86,7 @@ if (argv._.length > 0) {
 		return console.error(
 			"You haven't set a server in config. Run `mh-watch` for help.".red
 		);
-	if (!config.get('auth.session_id') || !config.get('auth.token') || !config.get('auth.profile_id'))
+	if (!config.get('auth.session_id') || !config.get('auth.token') || !config.get('auth.slg_user_token'))
 		return console.error(
 			'Check your token, session and profile id in config. Run `mh-watch` for help.'.red
 		);
@@ -112,8 +128,8 @@ if (argv._.length > 0) {
 								Authorization: config.get('auth.token'),
 								'User-Agent':
 									'minehut-file-watcher (https://github.com/RayBytes/minehut-file-watcher)',
-								'x-session-id': config.get('auth.session_id'),
-								'x-profile-id': config.get('auth.profile_id'),
+								'x-session-id': config.get('auth.session_id'), // Minehut Session Id Token
+								'x-profile-id': config.get('auth.slg_user_token'), // SLG User Token
 							},
 							body: JSON.stringify({
 								content: previousData,
@@ -150,11 +166,17 @@ if (showHelpCommand) {
 			'Set the auth token to use to authenticate with Minehut'
 				.yellow,
 			'',
+			'--setprofiletoken=<id>'.bold.white,
+			'Set the SLG profile token to authenticate with Minehut'.yellow,
+			'',
 			'--getconfig'.bold.white,
 			'Get your current config. Useful for debugging.'.yellow,
 			'',
 			'--minehutpath=<remote path>'.bold.white,
 			'Set the path of the file you want to update remotely'.yellow,
+			'',
+			'--dump=<auth>'.bold.white,
+			'If you use the code in the read me, you can just dump the result here and everything will be set for you.'.yellow,
 			'',
 			'After setting the above config values, use '.bold.white +
 				'mh-watch <file> (--minehutpath=<remote path>)'.bold.red +
