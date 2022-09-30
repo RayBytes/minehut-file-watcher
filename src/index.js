@@ -12,8 +12,6 @@ let argv = yargsParser(process.argv.slice(2));
 let config = new Config();
 
 let showHelpCommand = true;
-const http = require(`http`);
-const https = require(`https`);
 
 
 const MINEHUT_API_BASE = 'https://api.minehut.com';
