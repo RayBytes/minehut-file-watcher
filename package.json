@@ -17,6 +17,6 @@
     "commander": "^9.4.0",
     "conf": "^3.0.0",
     "downloads-folder": "^3.0.3",
-    "yargs-parser": "^13.0.0",
+    "yargs-parser": "^13.0.0"
   }
 }
