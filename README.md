@@ -40,6 +40,9 @@ Get your current config. Useful for debugging.
 --minehutpath=<remote path>
 Set the path of the file you want to update remotely
 
+--download=<remote path>
+Download a file from the minehut server
+
 After setting the above persistent config values, use mh-watch <file> (--minehutpath=<remote path>).
 ```
 
