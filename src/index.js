@@ -6,11 +6,15 @@ let chokidar = require('chokidar');
 let fetch = require('node-fetch');
 let fs = require('fs');
 let path = require('path');
+let downloadFolder = require('downloads-folder');
 
 let argv = yargsParser(process.argv.slice(2));
 let config = new Config();
 
 let showHelpCommand = true;
+const http = require(`http`);
+const https = require(`https`);
+
 
 const MINEHUT_API_BASE = 'https://api.minehut.com';
 if (argv.setsession) {
@@ -96,9 +100,54 @@ if (argv.getconfig) {
 	showHelpCommand = false;
 }
 
+if (argv.download) {
+
+	showHelpCommand = false;
+	const array = argv.download.split("/");
+	(async () => {
+		let res = await fetch(
+			`https://${config.get(
+				'server_id'
+			)}.manager.minehut.com/file/download?files=["${argv.download}"]`,
+			{
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: config.get('auth.token'),
+					'User-Agent':
+						'minehut-file-watcher (https://github.com/RayBytes/minehut-file-watcher)',
+					'x-session-id': config.get('auth.session_id'), // Minehut Session Id Token
+					'x-profile-id': config.get('auth.slg_user_token'), // SLG User Token
+				}
+		});
+        var filename = res.headers.get('content-disposition').split('filename=')[1].split(';')[0]
+
+		if (res.ok != false) {
+			fs.mkdir(path.join(`${downloadFolder()}/mh-downloads`),
+			{ recursive: true }, (err) => {
+			if (err) {
+				return console.error(err);
+			}
+			});
+
+			const fileStream = fs.createWriteStream(path.join(`${downloadFolder()}/mh-downloads/`, filename))
+			await new Promise((resolve, reject) => {
+				res.body.pipe(fileStream)
+				res.body.on('error', reject)
+				fileStream.on('finish', resolve)
+			})
+			
+
+			console.log('Downloaded file. Check the `Downloads/mh-downloads` directory. '.green);
+			showHelpCommand = false;
+		} else {
+			console.log("An error occured. Make sure that your auth details are correct, and that the server id is valid and is online.".red)
+		}
+	})();
+}
+
+
 if (argv._.length > 0) {
-//	if (argv._.length > 1)
-//		return console.error('You can only watch one file at a time!'.red);
 	if (!config.get('server_id'))
 		return console.error(
 			"You haven't set a server in config. Run `mh-watch` for help.".red
@@ -194,6 +243,9 @@ if (showHelpCommand) {
 			'',
 			'--minehutpath=<remote path>'.bold.white,
 			'Set the path of the file you want to update remotely'.yellow,
+			'',
+			'--download=<remote path>'.bold.white,
+			'Download a file from the minehut server'.yellow,
 			'',
 			'After setting the above config values, use '.bold.white +
 				'mh-watch <file> (--minehutpath=<remote path>)'.bold.red +
