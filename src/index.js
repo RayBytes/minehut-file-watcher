@@ -65,7 +65,7 @@ if (argv.dump) {
 		var object = JSON.parse(fs.readFileSync(localPath, 'utf8'));
 		config.set('auth.session_id', object.minehutSession)
 		config.set('auth.token', 'Bearer ' + object.minehutToken)
-		config.set('auth.slg_user_token', object.slgToken)
+		config.set('auth.slg_user_token', object.slgUserToken)
 		console.log('All values set!'.green)
 		showHelpCommand = false;
 	} catch (e) {
