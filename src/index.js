@@ -31,6 +31,10 @@ if (argv.setauth) {
 	showHelpCommand = false;
 }
 
+/**
+doritos
+*/
+
 if (argv.setprofiletoken) {
 	if (typeof argv.setprofiletoken !== 'string')
 		return console.error('SLG User Token must be a string.'.bold.red);
