@@ -53,7 +53,8 @@ You need to do `mh-watch script.sk --minehutpath=/plugins/Skript/scripts/myscrip
 ### Setup
 
 So in the initial versions of this tool, it was much easier to setup. However with API changes it has become very hard.
-I will be setting up a extension later to fix this issue.
+You can use the __MH+ google chrome extension__ to make the following process easier, as it will automatically fetch the keys needed
+when you open the minehut.com website.
 
 At the moment, you can use the following code to get the auth keys:
 (You need to inspect element the minehut website, and go to console. Paste this all in there)
